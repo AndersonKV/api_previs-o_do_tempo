@@ -12,22 +12,38 @@ city.addEventListener("keydown", async function(e) {
 
 	else if (e.keyCode == 13) {
 
+	let verify = document.querySelector('.my-container--weather-forecast-requested');
+
+ 	if(verify != null) {
+ 		verify.remove();
+ 	} 
+
+	apiDate = ([]);
+	apiWeekday = ([]);
+
 	let url1 = 'http://api.openweathermap.org/data/2.5/weather?q='+city.value+'&APPID=c9e521ce9d19eaee59d2bac74f6410a9'
 	let url2 = 'http://api.openweathermap.org/data/2.5/forecast?q='+city.value+'&APPID=c9e521ce9d19eaee59d2bac74f6410a9'
  
- 	Promise.all([
+	Promise.all([
  		fetch(url1).then(cidade => cidade.json()),
 		fetch(url2).then(semana => semana.json())
 		])
 		.then((previsao) => {
-		apiDate.push(previsao[0])
-		apiWeekday.push(previsao[1])
-		createAnimation();
-		setTimeout(function() { template(); }, 1300);
-	})
-	.catch((err) => {console.log(err); });
+			if (previsao[0].cod && previsao[1].cod == 404) {
+ 	        	alert('ocorreu um problema na requsição, tente digitar corretamente')
+	    	} 
+			if (previsao[0].cod && previsao[1].cod == 200) {
+	        	console.log(previsao)
+	         	apiDate.push(previsao[0])
+				apiWeekday.push(previsao[1])
+				createAnimation();
+				setTimeout(function() { template(); }, 1500);
+	    	}
+	    })
+		.catch((err) => {console.log(err); });
 
- 	}
+	}
+
 }) 
 
 //espera de evento no btn/lupa
@@ -35,6 +51,16 @@ btn.addEventListener("click", async function(e) {
 	if(city.value.length == 0) { alert('digite algo') }
 
 	else {
+
+	let verify = document.querySelector('.my-container--weather-forecast-requested');
+
+ 	if(verify != null) {
+ 		verify.remove();
+ 	}
+
+	apiDate = ([]);
+	apiWeekday = ([]);
+
 	let url1 = 'http://api.openweathermap.org/data/2.5/weather?q='+city.value+'&APPID=c9e521ce9d19eaee59d2bac74f6410a9'
 	let url2 = 'http://api.openweathermap.org/data/2.5/forecast?q='+city.value+'&APPID=c9e521ce9d19eaee59d2bac74f6410a9'
  
@@ -43,12 +69,18 @@ btn.addEventListener("click", async function(e) {
 		fetch(url2).then(semana => semana.json())
 		])
 		.then((previsao) => {
-		apiDate.push(previsao[0])
-		apiWeekday.push(previsao[1])
-		createAnimation();
-		setTimeout(function() { template(); }, 1300);
-	})
-	.catch((err) => {console.log(err); });
+			if (previsao[0].cod && previsao[1].cod == 404) {
+ 	        	alert('ocorreu um problema na requsição, tente digitar corretamente')
+	    	} 
+			if (previsao[0].cod && previsao[1].cod == 200) {
+	        	console.log(previsao)
+	         	apiDate.push(previsao[0])
+				apiWeekday.push(previsao[1])
+				createAnimation();
+				setTimeout(function() { template(); }, 1500);
+	    	}
+	    })
+		.catch((err) => {console.log(err); });
 
 	}
 });
@@ -98,7 +130,8 @@ async function template() {
  	dataModeling();
 
  	//remove animação
- 	document.querySelector('.div-animation').remove();
+ 	document.querySelector('.div-animation').remove();   	 
+	document.querySelector('#city').value = "";
 }
 
 function verifyCountryAndWeather() {
@@ -361,16 +394,16 @@ function dataModeling() {
  	let weather_day = document.querySelectorAll('.weather-day .first-span');
 	let weather_day_2 = document.querySelectorAll('.weather-day .second-span');
 
-	//loop para modelar todos os numeros do dia da semana
-	for(i = 0; i < weather_day.length; i++) {
-  		let formated_day = weather_day[i].innerText.substring(0, 2)
- 		document.querySelectorAll('.weather-day .first-span')[i].innerText = formated_day;
+	for (const [key, span] of weather_day.entries()) {
+ 	  	let formated_day = span.innerText.substring(0, 2)
+ 	 	weather_day[key].innerText = formated_day;
 	}
 
-	for(l = 0; l < weather_day_2.length; l++) {
-		let formated_day_2 = weather_day_2[l].innerText.substring(0, 2)
-		document.querySelectorAll('.weather-day .second-span')[l].innerText = formated_day_2;
+	for (const [key, span] of weather_day_2.entries()) {
+ 	  	let formated_day_2 = span.innerText.substring(0, 2)
+ 	 	weather_day_2[key].innerText = formated_day_2;
 	}
+
 	//formtada os numeros deixando apenas dois
   	let formated_down = weather_down.innerText.substring(0, 2)
   	let formated_up = weather_up.innerText.substring(0, 2)
@@ -378,7 +411,6 @@ function dataModeling() {
  
  	document.querySelector('.weather-down span').innerText = formated_down
  	document.querySelector('.weather-up span').innerText = formated_up;
-
  	document.querySelector('.weather-thermal-sensation .weather-thermal span').innerText = formated_wind;	
 }
 

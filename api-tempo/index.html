@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Api Weather</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--  CSS BONITÃO -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+	<!-- font awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+</head>
+<body class="resp">
+
+
+<div class="my-container">
+
+	<div class="my-container--grid-center">
+		<h1>Previsão do tempo</h1>
+		
+		<div class="show"></div>
+
+		<div class="my-container--input">
+ 			<input type="text" name="" placeholder="digite o nome da cidade" id="city">
+ 			<div class="my-container--input-group-addon" >
+            	<i class="fa fa-search"></i>
+          	</div>
+ 		</div>
+ 		<hr class="hr-2">
+		<h2 style="margin-top: 20px;" class="animation">Capitais</h2>
+
+		<div class="my-container--row">
+ 	 		<div class="my-container--row--col-sm-left">
+	 			<div class="my-container--row-weather">
+					<span class="weather--m-small animation">Min</span>
+					<span class="weather--m-small animation">Max</span>
+				</div>		 
+	 		</div>
+
+	 		<div class="my-container--row--col-sm-right">
+	 			<div class="my-container--row-weather">
+					<span class="weather--m-small animation">Min</span>
+					<span class="weather--m-small animation">Max</span>
+				</div> 		 	 		 
+	 		</div>
+		</div>
+
+ 	</div>
+
+</div>
+
+<script src="js/openWeatherMap.js"></script>	
+</body>
+</html>
